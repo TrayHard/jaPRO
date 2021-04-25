@@ -2221,11 +2221,13 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 	switch ( mode ) {
 	default:
 	case SAY_ALL:
-		G_LogPrintf( "say: %s: %s\n", ent->client->pers.netname, text ); // --kinda useless since logs already get the normal chatlogs?
+		G_ChatLogPrintf( "say: %s: %s\n", ent->client->pers.netname, text );
+		G_LogPrintf( "say: %s: %s\n", ent->client->pers.netname, text );
 		Com_sprintf (name, sizeof(name), "%s%c%c"EC": ", ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 		color = COLOR_GREEN;
 		break;
 	case SAY_TEAM:
+		G_ChatLogPrintf( "sayteam: %s: %s\n", ent->client->pers.netname, text );
 		G_LogPrintf( "sayteam: %s: %s\n", ent->client->pers.netname, text );
 		if (Team_GetLocationMsg(ent, location, sizeof(location)))
 		{
@@ -2255,6 +2257,7 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 		color = COLOR_MAGENTA;
 		break;
 	case SAY_CLAN:
+		G_ChatLogPrintf( "sayclan: %s: %s\n", ent->client->pers.netname, chatText );
 		G_LogPrintf( "sayclan: %s: %s\n", ent->client->pers.netname, chatText );
 		if (Team_GetLocationMsg(ent, location, sizeof(location)))
 		{
@@ -2270,6 +2273,7 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 		color = COLOR_RED;
 		break;
 	case SAY_ADMIN:
+		G_ChatLogPrintf( "sayadmin: %s: %s\n", ent->client->pers.netname, chatText );
 		G_LogPrintf( "sayadmin: %s: %s\n", ent->client->pers.netname, chatText );
 		if (Team_GetLocationMsg(ent, location, sizeof(location)))
 		{

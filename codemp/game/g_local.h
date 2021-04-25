@@ -25,6 +25,7 @@ extern vec3_t gPainPoint;
 #define	GAMEVERSION	"japro"
 
 #define SECURITY_LOG "security.log"
+#define CHAT_LOG "chat.log"
 #define DUEL_LOG "duels.log" //duellog
 #define RACE_LOG "races.log" //racelog
 #if 1
@@ -1561,6 +1562,10 @@ typedef struct level_locals_s {
 	struct {
 		fileHandle_t	log;
 	} security;
+
+	struct {
+		fileHandle_t	log;
+	} chat;
 
 	struct {
 		int num;

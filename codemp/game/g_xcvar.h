@@ -54,6 +54,12 @@ XCVAR_DEF( g_austrian,					"0",			NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_autoMapCycle,				"0",			NULL,				CVAR_ARCHIVE|CVAR_NORESTART,					qtrue )
 XCVAR_DEF( g_banIPs,					"",				NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_charRestrictRGB,			"1",			NULL,				CVAR_ARCHIVE,									qfalse )
+
+XCVAR_DEF( g_chatLog,					"1",			NULL,				CVAR_ARCHIVE,									qfalse )
+XCVAR_DEF( g_chatLogSync,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )
+XCVAR_DEF( g_chatLogFile,				"chat.log",		NULL,				CVAR_ARCHIVE,									qfalse )
+
+XCVAR_DEF( g_logClientInfo,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_duelWeaponDisable,			"1",			NULL,				CVAR_SERVERINFO|CVAR_ARCHIVE|CVAR_LATCH,		qtrue )
 XCVAR_DEF( g_debugAlloc,				"0",			NULL,				CVAR_NONE,										qfalse )
 #ifndef FINAL_BUILD

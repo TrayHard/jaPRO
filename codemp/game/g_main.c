@@ -247,6 +247,17 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	G_LogPrintf( "------------------------------------------------------------\n" );
 	G_LogPrintf( "InitGame: %s^7\n", serverinfo );
 
+	if ( g_chatLogFile.string[0] )
+	{
+		trap->FS_Open( g_chatLogFile.string, &level.chat.log, g_chatLogSync.integer ? FS_APPEND_SYNC : FS_APPEND );
+		if ( level.chat.log )
+			trap->Print( "Logging to %s\n", g_chatLogFile.string );
+		else
+			trap->Print( "WARNING: Couldn't open logfile: %s\n", g_chatLogFile.string );
+	}
+	else
+		trap->Print( "Not logging game events to disk.\n" );
+
 	if ( g_securityLog.integer )
 	{
 		if ( g_securityLog.integer == 1 )
@@ -1663,6 +1674,38 @@ void QDECL G_LogPrintf( const char *fmt, ... ) {
 	return;
 
 	trap->FS_Write( string, strlen( string ), level.logFile );
+}
+/*
+=================
+G_ChatLogPrintf
+
+Print to the chatLogFile with a time stamp if it is open
+=================
+*/
+void QDECL G_ChatLogPrintf( const char *fmt, ... ) {
+	va_list		argptr;
+	char		string[1024] = {0};
+	time_t		rawtime;
+	int			timeLen = 0;
+	struct tm*	gtime;
+
+	time( &rawtime );
+	localtime( &rawtime );
+	gtime = gmtime( &rawtime );
+	strftime( string, sizeof( string ), "[%Y-%m-%d] [%H:%M:%S] ", gtime );
+	timeLen = strlen( string );
+
+	va_start( argptr, fmt );
+	Q_vsnprintf( string+timeLen, sizeof( string ) - timeLen, fmt, argptr );
+	va_end( argptr );
+
+	if ( dedicated.integer )
+	trap->Print( "%s", string + timeLen );
+
+	if ( !level.chat.log )
+	return;
+
+	trap->FS_Write( string, strlen( string ), level.chat.log );
 }
 /*
 =================
