@@ -1642,28 +1642,25 @@ Print to the logfile with a time stamp if it is open
 void QDECL G_LogPrintf( const char *fmt, ... ) {
 	va_list		argptr;
 	char		string[1024] = {0};
-	int			mins, seconds, msec, l;
-
-	msec = level.time - level.startTime;
-
-	seconds = msec / 1000;
-	mins = seconds / 60;
-	seconds %= 60;
-//	msec %= 1000;
-
-	Com_sprintf( string, sizeof( string ), "%i:%02i ", mins, seconds );
-
-	l = strlen( string );
+	time_t		rawtime;
+	int			timeLen = 0;
+	struct tm*	gtime;
+ 
+	time( &rawtime );
+	localtime( &rawtime );
+	gtime = gmtime( &rawtime );
+	strftime( string, sizeof( string ), "[%Y-%m-%d] [%H:%M:%S] ", gtime );
+	timeLen = strlen( string );
 
 	va_start( argptr, fmt );
-	Q_vsnprintf( string + l, sizeof( string ) - l, fmt, argptr );
+	Q_vsnprintf( string+timeLen, sizeof( string ) - timeLen, fmt, argptr );
 	va_end( argptr );
 
 	if ( dedicated.integer )
-		trap->Print( "%s", string + l );
+	trap->Print( "%s", string + timeLen );
 
 	if ( !level.logFile )
-		return;
+	return;
 
 	trap->FS_Write( string, strlen( string ), level.logFile );
 }
